@@ -1,7 +1,7 @@
 # 소개
-#### 중소기업은행 지자체 협약 지원 정보 서비스 API
+### 중소기업은행 지자체 협약 지원 정보 서비스 API
 
-<br>
+<br><br>
 ## 1. 개발 프레임워크
 - **Java/Spring**
 - **JDK 1.8**
@@ -64,7 +64,6 @@ id | region_cd | target | usage | limit | rate | institute | mgmt | reception | 
 
 ## 3. 빌드 및 실행 방법
 1. STS or Eclipse 내 Import
-<br>
 2. 홈페이지 접속
     - http://localhost:8080/controller/
     <img src="mainPage.png" style="border:1px solid silver"/>
