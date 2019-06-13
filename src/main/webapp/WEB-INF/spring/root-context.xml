@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<bean id="dataSourceSpied" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	 	<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+	 	<property name="url" value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC"></property>
+	 	<property name="username" value="root"></property>
+	 	<property name="password" value="zaq123"></property>
+	</bean>
+	
+	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataSourceSpied" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="SQL : "/>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:/com/assign01/config/config.xml"/>
+		<property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml"></property>
+	</bean>
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"
+		destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>	
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" id="viewResolver">
+		<property name="order" value="0"/>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" id="jsonView">
+		<property name="contentType" value="application/json;charset=UTF-8"/>
+	</bean>
+	
+	<context:component-scan base-package="com.assign01.dao" />
+	<context:component-scan base-package="com.assign01.service" />
+	
+</beans>

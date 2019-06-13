@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="region">
+
+	<select id="getApplyDataJson" resultType="RegionDataJsonVO">
+		SELECT B.region_nm
+		     , A.target
+		     , A.`usage`
+		     , A.`limit`
+		     , A.rate
+		     , A.institute
+		     , A.mgmt
+		     , A.reception
+		  FROM RG_APPLY_DATA A
+		     , RG_INFORM B
+		 WHERE 1=1
+		   AND A.region_cd = B.region_cd
+		   AND B.region_nm like CONCAT('%',#{region_nm},'%')
+		 ORDER BY B.region_nm ASC, A.target ASC
+	</select>
+	
+	<select id="getDataSearch" parameterType="String" resultType="RegionDataJsonVO">
+		SELECT B.region_nm
+		     , A.target
+		     , A.`usage`
+		     , A.`limit`
+		     , A.rate
+		     , A.institute
+		     , A.mgmt
+		     , A.reception
+		  FROM RG_APPLY_DATA A
+		     , RG_INFORM B
+		 WHERE 1=1
+		   AND A.region_cd = B.region_cd
+		   AND B.region_nm LIKE CONCAT('%', #{region_nm}, '%')
+		 ORDER BY B.region_nm ASC, A.target ASC
+	</select>
+
+	<select id="getLimitSortData" parameterType="int" resultType="RegionInformVO">
+        SELECT RG.REGION_NM
+             , RG.LIMIT_AMT
+        	 , IF(INSTR(RG.RATE2, '~') = 0, RG.RATE2
+                                          , (
+                                             SUBSTR(RATE2, 1, INSTR(RG.RATE2,'~')-1)
+                                           + SUBSTR(RATE2, INSTR(RG.RATE2,'~')+1)
+                                            ) / 2) AS AVG_RATE
+          FROM (
+                SELECT B.REGION_NM
+                	 , A.`LIMIT`
+                	 , (CASE 
+                	    WHEN INSTR(A.`LIMIT`, '억원') > 0
+                	    THEN CAST(SUBSTR(A.`LIMIT`, 1, INSTR(A.`LIMIT`, '억원')-1) AS UNSIGNED) * 100000000
+                	    WHEN INSTR(A.`LIMIT`, '천만') > 0
+                	    THEN CAST(SUBSTR(A.`LIMIT`, 1, INSTR(A.`LIMIT`, '천만')-1) AS UNSIGNED) * 10000000
+                	    WHEN INSTR(A.`LIMIT`, '백만') > 0
+                	    THEN CAST(SUBSTR(A.`LIMIT`, 1, INSTR(A.`LIMIT`, '백만')-1) AS UNSIGNED) * 1000000
+                	    ELSE 0
+                	   END) AS LIMIT_AMT
+               		 , A.RATE
+               	     , REPLACE(IF(INSTR(A.RATE, '%') = 0, '0%', A.RATE), '%', '') AS RATE2
+               	  FROM RG_APPLY_DATA A
+                     , RG_INFORM B
+                 WHERE A.REGION_CD = B.REGION_CD
+               ) RG
+         ORDER BY RG.LIMIT_AMT DESC, AVG_RATE
+         LIMIT #{cnt}
+	</select>
+
+	<select id="getRateSortData" resultType="RegionInformVO">
+        SELECT C.REGION_NM
+             , IF(INSTR(C.RATE, '~') = 0, C.RATE, SUBSTR(C.RATE, 1, INSTR(C.RATE,'~')-1)) AS RATE
+          FROM (SELECT B.REGION_NM
+					 , REPLACE(IF(INSTR(A.RATE, '%') = 0, '0%', A.RATE), '%', '') AS RATE
+				  FROM RG_APPLY_DATA A
+					 , RG_INFORM B
+				 WHERE 1=1
+				   AND A.REGION_CD = B.REGION_CD
+				) C
+		 ORDER BY RATE
+         LIMIT 1
+	</select>
+
+	<update id="update" parameterType="map">
+	    UPDATE RG_APPLY_DATA A
+             , RG_INFORM B
+		   SET B.region_nm = #{region_nm}
+		     , A.target    = #{target}
+		     , A.`usage`   = #{usage}
+		     , A.`limit`   = #{limit}
+		     , A.rate      = #{rate}
+		     , A.institute = #{institute}
+		     , A.mgmt      = #{mgmt}
+		     , A.reception = #{reception}
+		     , A.upd_dt    = now()
+		 WHERE A.region_cd = B.region_cd
+		   AND A.region_cd = #{region_cd}
+	</update>
+
+	<delete id="deleteRegion" parameterType="RegionApplyDataVO">
+	    DELETE 
+	      FROM RG_APPLY_DATA
+		 WHERE region_cd = #{region_cd}
+	</delete>
+	
+</mapper>

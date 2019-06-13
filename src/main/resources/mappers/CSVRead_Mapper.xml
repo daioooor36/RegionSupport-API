@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="csvRead">
+
+	<insert id="addRegion" parameterType="CSVReadVO">
+			INSERT IGNORE INTO RG_INFORM (REGION_CD, REGION_NM)
+		<foreach collection="regionList" item="item" separator="UNION ALL">
+			SELECT distinct(CONCAT('RG',100+#{item.id}))
+			     , #{item.region_nm}
+			  FROM DUAL
+	    </foreach>
+	</insert>
+  
+	<insert id="addData" parameterType="CSVReadVO">
+		 INSERT IGNORE INTO RG_APPLY_DATA (id
+										 , region_cd
+										 , target
+										 , `usage`
+										 , `limit`
+										 , rate
+										 , institute
+										 , mgmt
+										 , reception
+										 , reg_dt
+										 , upd_dt
+								  )VALUES
+								  <foreach collection="regionList" item="item" separator=", ">
+								         ( #{item.id}
+								         , (SELECT REGION_CD FROM RG_INFORM WHERE REGION_NM = #{item.region_nm})
+										 , #{item.target}
+										 , #{item.usage}
+										 , #{item.limit}
+										 , #{item.rate}
+										 , #{item.institute}
+										 , #{item.mgmt}
+										 , #{item.reception}
+										 , now()
+										 , now()
+										 )
+								  </foreach>
+	</insert>
+	
+</mapper>
