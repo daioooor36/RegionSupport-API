@@ -1,25 +1,22 @@
 package com.assign01.controller;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import java.util.List;
-
-import javax.transaction.Transactional;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.assign01.vo.CSVReadVO;
 
-@Transactional
 public class CSVReadControllerTest
 {	
 	@InjectMocks
@@ -47,8 +44,8 @@ public class CSVReadControllerTest
 		assertThat(list.get(0).getRegion_nm(), CoreMatchers.is("강릉시"));
 	}
 
-	@Transactional
 	@Test
+	@Rollback
 	public void manageDataTest() throws Exception
 	{
 		//HTTP Method GET요청을 잘받았는지 테스트

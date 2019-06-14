@@ -60,7 +60,7 @@ public class RegionController
 		return new ModelAndView("home", "list", list);
 	}
 	
-	// 1. 지원하는 지자체 목록 검색
+	// 2. 지자체명 입력받아 해당 지자체 지원정보 출력
 	@RequestMapping(value = "/regionSearch.do", method=RequestMethod.POST)
 	public List <RegionDataJsonVO> searchRegion(@RequestBody Map<String,Object> param) throws Exception
 	{
@@ -79,18 +79,7 @@ public class RegionController
 		System.out.println(list);
 		
 		return list;
-	}
-	
-	// 2. 지자체명 입력받아 해당 지자체 지원정보 출력
-	@RequestMapping(value="/search.do", method=RequestMethod.POST)
-	public List <RegionDataJsonVO> search(@RequestBody Map<String,Object> param) throws Exception
-	{
-		String region_nm = (String) param.get("region_nm");
-						
-		List <RegionDataJsonVO> list = region.getDataSearch(region_nm);
-		
-		return list;		
-	}
+	}	
 	
 	// 3. 지자체 정보 수정기능
 	@RequestMapping(value = "update.do", method=RequestMethod.PUT)
