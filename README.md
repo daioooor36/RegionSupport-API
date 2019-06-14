@@ -10,6 +10,9 @@
 - **MyBatis**
 
 <br>
+
+---
+
 <br>
 
 ## 2. 문제해결 방법
@@ -42,17 +45,15 @@
 <br>
 
 ### 2-1. Entity 설계
-##### - RG_INFORM
+##### RG_INFORM
 region_cd | region_nm
 --------- | ---------
 RG101 | 강릉시
 
-##### - RG_APPLY_DATA
+##### RG_APPLY_DATA
 id | region_cd | target | usage | limit | rate | institute | mgmt | reception | reg_dt | upd_dt
 -- | --------- | ------ | ----- | ----- | ---- | --------- | ---- | --------- | ------ | ------
 1 | RG101 | 강릉시 소재 중소기업으로서 강릉시장이 추천한 자 | 운전 | 추천금액 이내 | 3% | 강릉시 | 강릉지점 | 강릉시 소재 영업점 | 2019-06-10 21:58:47 | 2019-06-11 07:43:14
-
-#### <U>- 테이블 생성 규칙 [(링크)](https://github.com/daioooor36/RegionSupport-API/blob/master/Create_DB_Object.md)</U>
 
 <br>
 
@@ -62,6 +63,15 @@ id | region_cd | target | usage | limit | rate | institute | mgmt | reception | 
 - RG_INFORM 테이블에 지자체코드가 들어가고, RG_APPLY_DATA.region_cd가 외래키로 참조 하는 구조.
 
 <br>
+
+
+### 2-3. 테이블 생성 규칙
+#### [>생성규칙 바로가기](https://github.com/daioooor36/RegionSupport-API/blob/master/Create_DB_Object.md)
+
+<br>
+
+---
+
 <br>
 
 ## 3. 빌드 및 실행 방법
