@@ -1,24 +1,22 @@
 package com.assign01.controller;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.assign01.service.CSVReadService;
 import com.assign01.vo.CSVReadVO;
 
 @Transactional
@@ -41,34 +39,19 @@ public class CSVReadControllerTest
 	public void readCsvTest()
 	{
 		List<CSVReadVO> list = readCon.readCsv();
-		
-		assertEquals(98, list.size());		
-	}
 
-	@Transactional
-	@Test
-	public void insertCsvTest() throws Exception
-	{
-		/*
-		ModelAndView model = readCon.insertCsv();
+		// DB에 98개 rows의 데이터가 잘 들어갔는지 테스트
+		assertThat(list.size(), CoreMatchers.is(98));
 		
-		model.getViewName();
-		
-		assertEquals("main", model.getViewName());
-		*/
+		// 그 중 첫번째 행의 region_nm이 강릉시로 제대로 들어갔는지 테스트
+		assertThat(list.get(0).getRegion_nm(), CoreMatchers.is("강릉시"));
 	}
 
 	@Transactional
 	@Test
 	public void manageDataTest() throws Exception
 	{
-		mockMvc.perform(MockMvcRequestBuilders.get("list_raw")).andDo(print());
-		/*
-		ModelAndView model = readCon.manageData();
-		
-		Map<String,Object> map = model.getModel();
-		
-		assertEquals("CSV파일을 성공적으로 읽어왔습니다.", map.get("message"));
-		*/
+		//HTTP Method GET요청을 잘받았는지 테스트
+		mockMvc.perform(MockMvcRequestBuilders.get("csvInsert")).andDo(print());
 	}
 }

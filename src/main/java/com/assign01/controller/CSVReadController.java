@@ -1,12 +1,10 @@
 package com.assign01.controller;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.assign01.service.CSVReadService;
@@ -39,6 +35,8 @@ public class CSVReadController
 		
 	public List<CSVReadVO> readCsv()
 	{
+		logger.info("Start to Read .csv file.");
+		
 		List<CSVReadVO> data = null;
 		
 		try
@@ -65,25 +63,21 @@ public class CSVReadController
 		return data;
 	}
 
-	public ModelAndView insertCsv() throws Exception
+	public void insertCsv() throws Exception
 	{
-		//DB insert 작업
+		//DB insert
 		List<CSVReadVO> data = readCsv();
 				
 		csvRead.addData(data);
-		
-		// '/WEB-INF/views/csvReadResult.jsp' 으로 포워딩 
-		return new ModelAndView("main", "message", "CSV파일을 성공적으로 읽어왔습니다.");
 	}
 
-	// 1. 가져온 파일명으로 CSV파일 읽어 DB에 입력
+	// 1. CSV파일을 읽어 DB에 Insert하는 메소드
 	@RequestMapping(value="csvInsert.do", method=RequestMethod.GET)
 	public ModelAndView manageData() throws Exception
-	{
-		// CSV파일 입력
+	{		
 		insertCsv();
 		
-		// '/WEB-INF/views/csvReadResult.jsp' 으로 포워딩 
-		return new ModelAndView("home", "message", "CSV파일을 성공적으로 읽어왔습니다.");
+		// '/WEB-INF/views/hoem.jsp'로 포워딩 
+		return new ModelAndView("home", "message", "CSV파일을 정상적으로 불러왔습니다.");
 	}
 }

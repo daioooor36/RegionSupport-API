@@ -44,12 +44,13 @@ function sortLimit(){
 	
 	$.ajax({
 		method : "POST",
-		url : "limitSort_real.do",
+		url : "limitSort.do",
 		dataType : 'text',
 		contentType: "application/json; charset=utf-8",
 		data : JSON.stringify(parameter),
 		success : function(result) {
-			alert(result);
+			if(result!='')
+				alert(result);
 		},
 		error:function(request,status,error){
 			alert("error: "+error);

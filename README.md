@@ -1,7 +1,8 @@
 # 소개
 ### 중소기업은행 지자체 협약 지원 정보 서비스 API
 
-<br><br>
+<br>
+
 ## 1. 개발 프레임워크
 - **Java/Spring**
 - **JDK 1.8**
@@ -14,17 +15,16 @@
 
 ## 2. 문제해결 방법
 1. **CSV파일에서 각 레코드를 DB에 저장**
-    - .csv 파일을 읽어들여 DB에 List형식으로 넘겨 Insert 수행.
+    - .csv 파일을 읽어들여 DB Insert 수행.
 
 1. **지원하는 지자체 목록 검색**
-    - DB에 Insert된 전체 data를 Select 하여 JSON형태로 .jsp로 보냄.
+    - Insert된 data를 Select 후, JSON형태로 .jsp로 보냄.
 
-1. **지원하는 지자체명을 입력 받아 해당 지자체의 지원정보 출력**
-    - Web에서 입력한 지자체명을 실시간으로 JSON형태로 변환하여 요청하여 결과값을 화면에 반영.
+1. **지자체명을 입력 받아 해당 지자체의 지원정보 출력**
+    - 입력한 지자체명을 JSON형태로 실시간 요청하여 결과값을 반영.
 
 1. **지원하는 지자체 정보 수정 기능**
-    - 파라미터로 받은 JSON값으로 PUT요청을 하여 Update 수행.
-    - 시연을 위해 임의의 수정 값을 .jsp에 입력해두고 해당 값을 파라미터로 보냄.
+    - 파라미터로 받은 PUT요청으로 JSON값을 받아 Update 수행.
 
 1. **지원한도 내림차순 정렬(지원한도 동일 시, 이차보전 평균비율 오름차순)**
     - 출력 개수 K 입력 받음.
@@ -54,6 +54,7 @@ id | region_cd | target | usage | limit | rate | institute | mgmt | reception | 
 1 | RG101 | 강릉시 소재 중소기업으로서 강릉시장이 추천한 자 | 운전 | 추천금액 이내 | 3% | 강릉시 | 강릉지점 | 강릉시 소재 영업점 | 2019-06-10 21:58:47 | 2019-06-11 07:43:14
 
 <br>
+
 ### 2-2. ER Diagram
 <img src="Designed ERD.png"/>
 
@@ -64,15 +65,16 @@ id | region_cd | target | usage | limit | rate | institute | mgmt | reception | 
 
 ## 3. 빌드 및 실행 방법
 1. STS or Eclipse 내 Import
-2. 홈페이지 접속
+1. 홈페이지 접속
     - http://localhost:8080/controller/
     <img src="mainPage.png" style="border:1px solid silver"/>
-<br>
-3. 기능 별 수행
+
+
+1. 기능 별 수행
     1. 상위 탭 메뉴
         - HOME : 메인리스트 화면으로 이동
         - CSV 불러오기 : assign01.csv 파일을 읽어와서 DB에 Insert(최초 1회 수행필요).
-    2. HOME 화면 내 기능
+    1. HOME 화면 내 기능
         - 지원한도 정렬
         - 이차보전 정렬
         - 특정 행 수정(사전지정 값)

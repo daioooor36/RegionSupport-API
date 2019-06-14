@@ -66,16 +66,18 @@ public class RegionControllerTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(regionCon).build();
 	}
 
+	// 1. 지원하는 지자체 목록 검색
 	@Test
-	public void regionList_jsonTest() throws Exception
+	public void searchListTest() throws Exception
 	{
-		mockMvc.perform(MockMvcRequestBuilders.get("list_raw"))
-			.andDo(print());
-			//.andExpect(status().isOk()).andExpect(jsonPath("$[0].region_nm").value("강릉시"));
+		mockMvc.perform(MockMvcRequestBuilders.get("regionSearch"))
+			.andDo(print())
+			.andExpect(status().isOk());//.andExpect(jsonPath("$[0].region_nm").value("강릉시"));
 	}
 	
+	// 2. 지자체명 입력받아 해당 지자체 지원정보 출력
 	@Test
-	public void searchFormTest() throws Exception
+	public void searchRegionTest() throws Exception
 	{
 		mockMvc.perform(MockMvcRequestBuilders.get("searchForm"))
 		.andDo(print());
@@ -88,13 +90,7 @@ public class RegionControllerTest {
 		.andDo(print());
 	}
 	
-	@Test
-	public void updateFormTest() throws Exception
-	{
-		mockMvc.perform(MockMvcRequestBuilders.get("updateForm"))
-		.andDo(print());
-	}
-	
+	// 3. 지자체 정보 수정기능
 	@Test
 	public void updateTest() throws Exception
 	{
@@ -102,22 +98,17 @@ public class RegionControllerTest {
 		.andDo(print());
 	}
 	
+	// 4.지원한도 컬럼에서 지원금액으로 내림차순 정렬하여 특정개수만 출력
 	@Test
 	public void limitSortTest() throws Exception
-	{
-		mockMvc.perform(MockMvcRequestBuilders.get("limitSort"))
-		.andDo(print());
-	}
-	
-	@Test
-	public void limitSort_realTest() throws Exception
 	{
 		mockMvc.perform(MockMvcRequestBuilders.get("limitSort_real"))
 		.andDo(print());
 	}
 	
+	// 5. 이차보전 비율이 가장 작은 추천 기관명 출력
 	@Test
-	public void rateSort() throws Exception
+	public void rateSortTest() throws Exception
 	{
 		mockMvc.perform(MockMvcRequestBuilders.get("rateSort"))
 		.andDo(print());

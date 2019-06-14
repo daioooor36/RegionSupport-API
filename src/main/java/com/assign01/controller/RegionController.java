@@ -82,7 +82,6 @@ public class RegionController
 	}
 	
 	// 2. 지자체명 입력받아 해당 지자체 지원정보 출력
-	// 입력 region_nm을 제이슨으로 받아야함.////////////////////////////////////////	
 	@RequestMapping(value="/search.do", method=RequestMethod.POST)
 	public List <RegionDataJsonVO> search(@RequestBody Map<String,Object> param) throws Exception
 	{
@@ -91,13 +90,6 @@ public class RegionController
 		List <RegionDataJsonVO> list = region.getDataSearch(region_nm);
 		
 		return list;		
-	}
-	
-
-	@RequestMapping(value = "updateForm.do")
-	public ModelAndView updateForm()
-	{
-		return new ModelAndView("/updateForm");
 	}
 	
 	// 3. 지자체 정보 수정기능
@@ -109,19 +101,20 @@ public class RegionController
 		return list;
 	}
 	
-	/*
-	@RequestMapping(value = "limitSort.do")
-	public ModelAndView limitSort() throws Exception
-	{
-		return new ModelAndView("/limitSort");
-	}
-	*/
-	
 	// 4.지원한도 컬럼에서 지원금액으로 내림차순 정렬하여 특정개수만 출력
-	@RequestMapping(value = "limitSort_real.do", method=RequestMethod.POST)
-	public List <RegionInformVO> limitSort_real(@RequestBody Map<String,Object> param) throws Exception
+	@RequestMapping(value = "limitSort.do", method=RequestMethod.POST)
+	public List <RegionInformVO> limitSort(@RequestBody Map<String,Object> param) throws Exception
 	{
+		// 파라미터에 아무것도 안들어있을 경우 리턴
+		if(param.isEmpty() || param.get("cnt").equals(""))
+			return null;
+		
+		// 파라미터에서 id="cnt"에 해당하는 value 추출
 		int cnt = Integer.parseInt((String)param.get("cnt"));
+		
+		// 추출대상 개수가 0이하인 경우 리턴
+		if(cnt <= 0)
+			return null;
 		
 		// 전체 지자체 지원정보 조회
 		List <RegionInformVO> list = region.getLimitSortData(cnt);
