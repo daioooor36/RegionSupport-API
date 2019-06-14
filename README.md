@@ -6,9 +6,8 @@
 ## 1. 개발 프레임워크
 - **Java/Spring**
 - **JDK 1.8**
-- **MyBatis**
 - **MySQL**
-- **JUnit**
+- **MyBatis**
 
 <br>
 <br>
@@ -64,8 +63,8 @@ id | region_cd | target | usage | limit | rate | institute | mgmt | reception | 
 <br>
 
 ## 3. 빌드 및 실행 방법
-1. STS or Eclipse 내 Import
-1. 홈페이지 접속
+1. STS or Eclipse 내 Import - Existing Maven Projects - 'RegionSupport-API' 폴더 선택 - Run 수행
+1. 메인페이지 접속
     - http://localhost:8080/controller/
     <img src="mainPage.png" style="border:1px solid silver"/>
 
@@ -74,10 +73,102 @@ id | region_cd | target | usage | limit | rate | institute | mgmt | reception | 
     1. 상위 탭 메뉴
         - HOME : 메인리스트 화면으로 이동
         - CSV 불러오기 : assign01.csv 파일을 읽어와서 DB에 Insert(최초 1회 수행필요).
-    1. HOME 화면 내 기능
-        - 지원한도 정렬
-        - 이차보전 정렬
-        - 특정 행 수정(사전지정 값)
-        - 지자체명 검색
+    1. 기능설명
+        - 모든 입출력은 JSON 형태로 이루어집니다.
+
+        <br>
+
+        1. 전체리스트 출력
+
+        <table>
+          <tr>
+            <td align=center bgcolor="#dfdfdf">Input</td>
+            <td colspan=8 align=center>null</td>
+          </tr>
+          <tr>
+            <td align=center bgcolor="#dfdfdf">Output</td>
+            <td>region_nm</td>
+            <td>target</td>
+            <td>usage</td>
+            <td>limit</td>
+            <td>rate</td>
+            <td>institute</td>
+            <td>mgmt</td>
+            <td>reception</td>
+          </tr>
+        </table>
+
+        2. 지원한도 정렬
+
+        <table>
+          <tr>
+            <td align=center bgcolor="#dfdfdf">Input</td>
+            <td align=center>(Integer)지자체 수</td>
+          </tr>
+          <tr>
+            <td align=center bgcolor="#dfdfdf">Output</td>
+            <td align=center>region_nm</td>
+          </tr>
+        </table>
+
+        3. 이차보전 정렬
+
+        <table>
+          <tr>
+            <td align=center bgcolor="#dfdfdf">Input</td>
+            <td align=center>null</td>
+          </tr>
+          <tr>
+            <td align=center bgcolor="#dfdfdf">Output</td>
+            <td align=center>region_nm</td>
+          </tr>
+        </table>
+
+        4. 특정 지자체 내용 수정
+
+        <table>
+          <tr>
+            <td align=center bgcolor="#dfdfdf">Input</td>
+            <td>region_nm</td>
+            <td>target</td>
+            <td>usage</td>
+            <td>limit</td>
+            <td>rate</td>
+            <td>institute</td>
+            <td>mgmt</td>
+            <td>reception</td>
+          </tr>
+          <tr>
+            <td align=center bgcolor="#dfdfdf">Output</td>
+              <td>region_nm</td>
+              <td>target</td>
+              <td>usage</td>
+              <td>limit</td>
+              <td>rate</td>
+              <td>institute</td>
+              <td>mgmt</td>
+              <td>reception</td>
+          </tr>
+        </table>
+
+        5. 지자체명 검색
+
+        <table>
+          <tr>
+            <td align=center bgcolor="#dfdfdf">Input</td>
+            <td align=center colspan=8>(String)지자체 명</td>
+          </tr>
+          <tr>
+            <td align=center bgcolor="#dfdfdf">Output</td>
+              <td>region_nm</td>
+              <td>target</td>
+              <td>usage</td>
+              <td>limit</td>
+              <td>rate</td>
+              <td>institute</td>
+              <td>mgmt</td>
+              <td>reception</td>
+          </tr>
+        </table>
 
 <br>
